@@ -100,6 +100,8 @@ var NoSleep = function () {
 
     _classCallCheck(this, NoSleep);
 
+    this.enabled = false;
+
     if (oldIOS) {
       this.noSleepTimer = null;
     } else {
@@ -123,6 +125,9 @@ var NoSleep = function () {
             if (_this.noSleepVideo.currentTime > 0.5) {
               _this.noSleepVideo.currentTime = Math.random();
             }
+            if (_this.noSleepVideo.paused && _this.enabled) {
+              _this.noSleepVideo.play();
+            }
           });
         }
       });
@@ -140,6 +145,8 @@ var NoSleep = function () {
   }, {
     key: 'enable',
     value: function enable() {
+      this.enabled = true;
+
       if (oldIOS) {
         this.disable();
         console.warn('\n        NoSleep enabled for older iOS devices. This can interrupt\n        active or long-running network requests from completing successfully.\n        See https://github.com/richtr/NoSleep.js/issues/15 for more details.\n      ');
@@ -156,6 +163,8 @@ var NoSleep = function () {
   }, {
     key: 'disable',
     value: function disable() {
+      this.enabled = false;
+
       if (oldIOS) {
         if (this.noSleepTimer) {
           console.warn('\n          NoSleep now disabled for older iOS devices.\n        ');

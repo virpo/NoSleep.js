@@ -8,6 +8,8 @@ const oldIOS = typeof navigator !== 'undefined' && parseFloat(
 
 class NoSleep {
   constructor () {
+    this.enabled = false
+
     if (oldIOS) {
       this.noSleepTimer = null
     } else {
@@ -29,6 +31,9 @@ class NoSleep {
             if (this.noSleepVideo.currentTime > 0.5) {
               this.noSleepVideo.currentTime = Math.random()
             }
+            if (this.noSleepVideo.paused && this.enabled) {
+              this.noSleepVideo.play()
+            }
           })
         }
       })
@@ -43,6 +48,8 @@ class NoSleep {
   }
 
   enable () {
+    this.enabled = true
+
     if (oldIOS) {
       this.disable()
       console.warn(`
@@ -62,6 +69,8 @@ class NoSleep {
   }
 
   disable () {
+    this.enabled = false
+
     if (oldIOS) {
       if (this.noSleepTimer) {
         console.warn(`
